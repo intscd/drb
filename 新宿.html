@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>新宿市井新闻网 </title>
+  <style>
+    /* 全局重置 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #e6e4e0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 24px 16px;
+      font-family: 'Hiragino Sans', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
+    }
+
+    /* 报纸卡片 */
+    .newspaper {
+      max-width: 820px;
+      width: 100%;
+      background-color: #f3f1ed;
+      padding: 36px 44px 32px 44px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(120, 110, 100, 0.12);
+      position: relative;
+      background-image: 
+        radial-gradient(circle at 20% 30%, rgba(180, 170, 160, 0.03) 2px, transparent 2px),
+        radial-gradient(circle at 80% 70%, rgba(140, 130, 120, 0.04) 1px, transparent 1px),
+        radial-gradient(circle at 40% 80%, rgba(100, 90, 80, 0.03) 3px, transparent 3px),
+        radial-gradient(circle at 70% 20%, rgba(160, 150, 140, 0.03) 2px, transparent 2px);
+      background-size: 200px 200px, 300px 300px, 400px 400px, 250px 250px;
+      background-blend-mode: overlay;
+    }
+
+    .newspaper,
+    .newspaper * {
+      color: #1a1a1a;
+    }
+
+    /* 报头 */
+    .masthead {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 13px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #2b2a28;
+      border-bottom: 2px solid #7a1919;
+      padding-bottom: 10px;
+      margin-bottom: 18px;
+      font-weight: 400;
+      font-family: 'Hiragino Sans', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    }
+    .masthead .left {
+      font-weight: 300;
+      letter-spacing: 4px;
+      color: #2e2c29;
+    }
+    .masthead .right {
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: #4d4844;
+    }
+
+    /* 分类标签 — 暗红色 */
+    .category-tag {
+      display: inline-block;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      color: #7a1919;
+      border-left: 3px solid #7a1919;
+      padding-left: 10px;
+      margin-bottom: 18px;
+      text-transform: uppercase;
+      font-family: 'Hiragino Sans', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    }
+
+    /* 主标题 — 暗红色 + 衬线体（宋体/明朝体） */
+    .headline {
+      font-size: 44px;
+      font-weight: 700;
+      line-height: 1.3;
+      color: #7a1919;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+      font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Times New Roman', 'SimSun', serif;
+      text-shadow: 0 1px 0 rgba(120, 20, 20, 0.05);
+    }
+    .headline .sub-line {
+      display: block;
+      font-size: inherit;
+      font-weight: inherit;
+      margin-top: 2px;
+      color: #7a1919;
+    }
+
+    /* 分割线 — 暗红保留 */
+    .divider {
+      border: none;
+      height: 1px;
+      background: #7a1919;
+      opacity: 0.6;
+      margin: 16px 0 18px 0;
+    }
+    .divider-light {
+      border: none;
+      height: 1px;
+      background: #7a1919;
+      opacity: 0.3;
+      margin: 18px 0 20px 0;
+    }
+
+    /* 元信息 — 黑体，阅读数字暗红 */
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 14px;
+      color: #3d3a37;
+      letter-spacing: 0.3px;
+      padding-bottom: 2px;
+      font-family: 'Hiragino Sans', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    }
+    .meta .source {
+      font-weight: 400;
+      color: #3d3a37;
+    }
+    .meta .date {
+      color: #3d3a37;
+    }
+    .meta .read {
+      font-weight: 700;
+      color: #7a1919;
+      letter-spacing: 0.5px;
+    }
+    .meta .read span {
+      font-weight: 700;
+      color: #7a1919;
+    }
+
+    /* 正文 — 黑体，纯黑 */
+    .body-text {
+      margin-top: 6px;
+      font-family: 'Hiragino Sans', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    }
+    .body-text p {
+      font-size: 16px;
+      line-height: 1.9;
+      text-indent: 2em;
+      margin-bottom: 1.2em;
+      color: #1a1a1a;
+      letter-spacing: 0.4px;
+      font-weight: 350;
+      word-break: break-word;
+    }
+    .body-text p:last-of-type {
+      margin-bottom: 0.5em;
+    }
+
+    /* 免责声明 */
+    .disclaimer {
+      margin-top: 28px;
+      padding-top: 16px;
+      border-top: 1px solid #bbb6b0;
+      font-size: 11px;
+      line-height: 1.7;
+      color: #6b6660;
+      font-style: italic;
+      letter-spacing: 0.3px;
+      opacity: 0.8;
+      font-family: 'Hiragino Sans', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    }
+    .disclaimer p {
+      color: #6b6660;
+      text-indent: 0;
+      margin: 0;
+    }
+
+    /* 底部 */
+    .footer-note {
+      margin-top: 22px;
+      font-size: 11px;
+      text-align: right;
+      letter-spacing: 1.5px;
+      color: #4d4944;
+      border-top: 1px solid #d0ccc6;
+      padding-top: 14px;
+      font-weight: 300;
+      opacity: 0.7;
+      font-family: 'Hiragino Sans', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    }
+
+    /* 印刷噪点 */
+    .newspaper::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(60, 55, 50, 0.02) 1px, transparent 1px),
+        radial-gradient(circle at 90% 80%, rgba(40, 35, 30, 0.02) 2px, transparent 2px),
+        radial-gradient(circle at 30% 60%, rgba(80, 70, 60, 0.015) 3px, transparent 3px);
+      background-size: 180px 180px, 300px 300px, 400px 400px;
+      opacity: 0.5;
+      mix-blend-mode: multiply;
+      z-index: 0;
+    }
+    .newspaper > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* 颗粒叠加 */
+    .grain-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="1" stitchTiles="stitch"/><feColorMatrix type="matrix" values="0 0 0 0 0.15 0 0 0 0 0.14 0 0 0 0 0.12 0 0 0 0.04 0"/></filter><rect width="100%" height="100%" filter="url(%23noise)" opacity="0.4"/></svg>');
+      background-size: 300px 300px;
+      opacity: 0.15;
+      mix-blend-mode: multiply;
+      z-index: 0;
+    }
+    .newspaper {
+      position: relative;
+      overflow: hidden;
+    }
+    .newspaper .grain-overlay {
+      z-index: 0;
+    }
+    .newspaper > *:not(.grain-overlay) {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* 响应式 */
+    @media (max-width: 600px) {
+      .newspaper {
+        padding: 24px 18px 28px 18px;
+      }
+      .headline {
+        font-size: 30px;
+      }
+      .meta {
+        font-size: 12px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+      }
+      .body-text p {
+        font-size: 15px;
+        line-height: 1.8;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="newspaper">
+    <div class="grain-overlay"></div>
+
+    <!-- 报头 -->
+    <div class="masthead">
+      <span class="left">新宿市井新闻 </span>
+      <span class="right">· 都市奇谭</span>
+    </div>
+
+    <!-- 分类 -->
+    <div class="category-tag">都市奇闻 / 未解悬案</div>
+
+    <!-- 主标题 暗红色 + 衬线体 -->
+    <h1 class="headline">
+      离奇悬案｜新宿中央医院
+      <span class="sub-line">三名男子密室离奇失踪，案件至今未破</span>
+    </h1>
+
+    <hr class="divider">
+
+    <!-- 元信息 -->
+    <div class="meta">
+      <span class="source">来源：新宿市井新闻网</span>
+      <span class="date">发布时间：20XX.08.XX</span>
+      <span class="read">阅读：<span>68,5XX</span></span>
+    </div>
+
+    <hr class="divider-light">
+
+    <!-- 正文 -->
+    <div class="body-text">
+      <p>近日，一桩被新宿官方封存多年的都市旧案再度在小众网络社群发酵流传。多年前，知名组合「麻天狼」的三名成员——神宫寺寂雷、伊弉冉一二三、观音坂独步，在新宿中央医院内部一间独立会客室内，发生了完全违背物理逻辑的密室集体失踪事件，至今没有任何合理定论。</p>
+      <p>根据警方留存的未公开卷宗摘要显示，事发当日晚间，三人并非医院在职人员，仅作为访客进入新宿中央医院VIP独立会客室短暂闲谈休息。医院门禁系统、楼层人员登记记录均可证实：三人刷卡进入楼层、踏入会客室之后，系统再也没有捕捉到三人离开大楼、下楼、刷卡离场的任何记录。</p>
+      <p>当晚值班医护人员多次巡查走廊，发现会客室房门从内部彻底反锁，室内无任何灯光、无任何动静。多次敲门、呼叫均无人应答。直至次日清晨，院方安保团队强行破门勘查现场，眼前景象让所有在场人员无法解释。</p>
+      <p>会客室内部整洁完好，桌椅、水杯、陈设全部保持原状，无打斗痕迹、无挣扎痕迹、无血迹、无外力破窗、无逃生通道。整间房间门窗双重反锁，密闭性极高，不存在人为潜逃、躲藏、藏匿的可能性。</p>
+      <p>最诡异的是，整层楼、整栋大楼的监控录像硬盘数据被整体性清空抹除。不是故障黑屏、不是画面卡顿，而是所有对应时间段的录像文件彻底消失，系统日志仅残留一段无意义的低频干扰记录，技术部门多次恢复数据均宣告失败。</p>
+      <p>三人随身携带的私人物品、随身设备全部留在会客室内，唯独三人本人凭空消失，没有留下任何线索、任何痕迹、任何去向。</p>
+      <p>事件发生后，新宿中央医院迅速对外封锁舆情，紧急封存该楼层出入记录，下架所有相关公示内容，对外仅低调发布一则简短的来访人员悼念公示，草草收尾舆论风波。警方介入调查数月，排查绑架、蓄意失踪、密室出逃、内部人员协助潜逃等所有可能性，最终全部排除，案件无任何突破口。</p>
+      <p>迫于无法定性、无法取证、无法结案的特殊情况，该案最终以「原因不明、证据不足」永久悬置归档，涉事的独立会客室被医院彻底封锁、封闭停用，禁止任何人进入、检修与使用。</p>
+      <p>多年来，网络上衍生出无数猜测：人为失踪、刻意避世、灵异事件、医院秘闻、精神领域异常等说法层出不穷，但始终没有任何实质证据可以佐证。官方自始至终没有公布完整卷宗，没有公开调查细节，也没有给出任何合理解释。</p>
+      <p>官方公众号也曾报道：麻天狼失踪事件至今仍为都市传说爱好者之间最常提及的未解之谜。</p>
+    </div>
+
+    <!-- 免责声明 -->
+    <div class="disclaimer">
+      <p>※ 免责声明：本文内容基于网络公开信息整理，仅作都市传说记录，不构成任何事实认定或案件结论。文中涉及人名、团体、机构均为现实存在，事件经过源自非官方渠道描述，最终结论以官方通报为准。</p>
+    </div>
+
+    <!-- 底部 -->
+    <div class="footer-note">
+      新宿市井新闻 · 昭和XX年XX月XX日
+    </div>
+  </div>
+</body>
+</html>
